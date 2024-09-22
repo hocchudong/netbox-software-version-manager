@@ -1,0 +1,9 @@
+{% extends 'generic/object.html' %}
+{% load buttons %}
+{% load helpers %}
+{% load plugins %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'plugins:netbox_svm:softwareproductinstallation_list' %}?name_id={{ object.name.pk }}">{{ object.name }}</a></li>
+{% endblock %}

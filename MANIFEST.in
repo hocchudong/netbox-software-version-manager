@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+include SECURITY.md
+graft netbox_svm
+prune netbox_svm/tests
+global-exclude *.py[cod]
+global-exclude __pycache__

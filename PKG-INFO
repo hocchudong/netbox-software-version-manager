@@ -1,3 +1,33 @@
+Metadata-Version: 2.1
+Name: netbox-svm
+Version: 1.0.1
+Summary: Software Version Management Netbox Plugin fork from netbox-slm 1.7.0
+Home-page: https://github.com/hocchudong/netbox-software-version-manager
+Author-email: hungnv <vhung99.wp@gmail.com>
+License: Apache-2.0
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.10.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: build
+Requires-Dist: build==1.2.1; extra == "build"
+Requires-Dist: setuptools==70.3.0; extra == "build"
+Requires-Dist: twine==5.1.1; extra == "build"
+Provides-Extra: tools
+Requires-Dist: ruff==0.5.1; extra == "tools"
+
+
 # NetBox SVM
 
 <p align="center"><i>Netbox Plugin software version manager of software components, including versions and installations.</i></p>
