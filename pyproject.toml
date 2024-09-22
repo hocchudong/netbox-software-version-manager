@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox-svm"
+dynamic = ["version"]
+description = "Software Version Management Netbox Plugin fork from netbox-slm 1.7.0"
+readme = "README.md"
+requires-python = ">=3.10.12"
+license = { text = "Apache-2.0" }
+authors = [
+    {name = "hungnv", email = "vhung99.wp@gmail.com"},
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/hocchudong/netbox-software-version-manager"
+"Bug Tracker" = "https://github.com/hocchudong/netbox-software-version-manager/issues"
+
+[project.optional-dependencies]
+build = [
+    "build == 1.2.1",
+    "setuptools == 70.3.0",
+    "twine == 5.1.1",
+]
+tools = [
+    "ruff == 0.5.1",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "netbox_svm.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["netbox_svm"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["netbox_svm"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "D104",  # https://beta.ruff.rs/docs/rules/#pydocstyle-d - don't require doc strings in __init__.py files
+    "F401",  # https://beta.ruff.rs/docs/rules/#pyflakes-f - don't complain about unused imports in __init__.py files
+]
+"netbox_svm/migrations/*.py" = [
+    "E501",  # https://beta.ruff.rs/docs/rules/line-too-long/ - don't check on Django generated migration files
+]
+
+[tool.ruff.format]
+exclude = ["netbox_svm/migrations/*.py"]

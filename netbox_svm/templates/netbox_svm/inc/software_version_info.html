@@ -1,0 +1,26 @@
+{% load helpers %}
+{% load render_table from django_tables2 %}
+
+{% if software_version %}
+<div class="card">
+  <h5 class="card-header">Software Installation</h5>
+  <div class="card-body">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Software Product</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sv in software_version %}
+        <tr>
+          <td><a href="{% url 'plugins:netbox_svm:softwareproduct' pk=sv.software_product.id %}">{{ sv.software_product }}</a></td>
+          <td><a href="{% url 'plugins:netbox_svm:softwareproductversion' pk=sv.version.id %}">{{ sv.version }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
