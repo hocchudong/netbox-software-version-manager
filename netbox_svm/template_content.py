@@ -37,7 +37,15 @@ class DeviceSofwareVersionInfo(SoftwareVersionInfoExtension):
     # def right_page(self):
     #     return ""
 
+class IPSofwareVersionInfo(SoftwareVersionInfoExtension):
+    model = 'ipam.ipaddress'
+    kind = 'ipaddress'
+
+    # def right_page(self):
+    #     return ""
+
 template_extensions = (
     VirtualMachineSofwareVersionInfo,
-    DeviceSofwareVersionInfo
+    DeviceSofwareVersionInfo,
+    IPSofwareVersionInfo
 )

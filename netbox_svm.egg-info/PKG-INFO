@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: netbox-svm
-Version: 1.0.1
+Version: 1.1.0
 Summary: Software Version Management Netbox Plugin fork from netbox-slm 1.7.0
 Author-email: hungnv <vhung99.wp@gmail.com>
 License: Apache-2.0

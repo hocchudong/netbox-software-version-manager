@@ -35,6 +35,8 @@ netbox_svm/migrations/0006_softwarelicense_stored_location_url.py
 netbox_svm/migrations/0007_softwareproductinstallation_cluster.py
 netbox_svm/migrations/0008_software_release_types_and_more.py
 netbox_svm/migrations/0009_remove_softwareproductinstallation_netbox_slm_softwareproductinstallation_platform_and_more.py
+netbox_svm/migrations/0010_remove_softwareproductinstallation_netbox_svm_softwareproductinstallation_resource_and_more.py
+netbox_svm/migrations/0011_softwareproductinstallation_contact.py
 netbox_svm/migrations/__init__.py
 netbox_svm/models/__init__.py
 netbox_svm/models/softwarelicense.py
@@ -46,7 +48,11 @@ netbox_svm/templates/netbox_svm/softwareproduct.html
 netbox_svm/templates/netbox_svm/softwareproductinstallation.html
 netbox_svm/templates/netbox_svm/softwareproductversion.html
 netbox_svm/templates/netbox_svm/generic/bulk_remove.html
+netbox_svm/templates/netbox_svm/inc/installation_contact.html
 netbox_svm/templates/netbox_svm/inc/software_version_info.html
+netbox_svm/templates/vewtab_install/installation_add_contact.html
+netbox_svm/templates/vewtab_install/installation_contact_base.html
+netbox_svm/templates/vewtab_install/installation_remove_contact.html
 netbox_svm/templates/viewtab_version/software_installations.html
 netbox_svm/templates/viewtab_version/software_installations_base.html
 netbox_svm/templatetags/__init__.py
