@@ -87,6 +87,22 @@ urlpatterns = [
         name="softwareproductinstallation_changelog",
         kwargs={"model": SoftwareProductInstallation},
     ),
+
+    path(
+        "installations/<int:pk>/contact/",
+        views.SoftwareProductInstallationContactView.as_view(),
+        name="softwareproductinstallation_contact"
+    ),
+    path(
+        "installations/<int:pk>/contact/add/",
+        views.SoftwareProductInstallationAddContactView.as_view(),
+        name="softwareproductinstallation_add_contact"
+    ),
+    path(
+        "installations/<int:pk>/contact/remove/",
+        views.SoftwareProductInstallationRemoveContactView.as_view(),
+        name="softwareproductinstallation_remove_contact"
+    ),
     # SoftwareLicense
     path("licenses/", views.SoftwareLicenseListView.as_view(), name="softwarelicense_list"),
     path("licenses/add/", views.SoftwareLicenseEditView.as_view(), name="softwarelicense_add"),

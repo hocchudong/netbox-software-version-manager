@@ -22,6 +22,11 @@
                     <th scope="row">Virtualmachine</th>
                     <td>{{ object.virtualmachine }}</td>
                 </tr>
+{% elif object.ipaddress %}
+                <tr>
+                    <th scope="row">IPAddress</th>
+                    <td>{{ object.ipaddress }}</td>
+                </tr>
 {% else %}
                 <tr>
                     <th scope="row">Cluster</th>
@@ -43,6 +48,7 @@
         {% include 'inc/panels/comments.html' %}
         {% plugin_left_page object %}
     </div>
+    {% include 'netbox_svm/inc/installation_contact.html' %}
 </div>
 <div class="row">
     <div class="col col-md-12">

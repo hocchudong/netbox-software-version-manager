@@ -102,9 +102,11 @@ class SoftwareProductInstallationTable(NetBoxTable):
 
     device = tables.Column(accessor="device", linkify=True)
     virtualmachine = tables.Column(accessor="virtualmachine", linkify=True)
+    ipaddress = tables.Column(accessor="ipaddress", linkify=True)
     cluster = tables.Column(accessor="cluster", linkify=True)
     resource = tables.Column(accessor="resource", linkify=True)
     type = tables.Column(accessor="render_type")
+    # contact = tables.Column(accessor="contact", linkify=True)
     software_product = tables.Column(accessor="software_product", linkify=True)
     version = tables.Column(accessor="version", linkify=True)
 
@@ -133,15 +135,17 @@ class SoftwareProductInstallationTable(NetBoxTable):
     def order_resource(self, queryset, is_descending):
         device_annotate = queryset.filter(device__isnull=False).annotate(resource_value=F("device__name"))
         vm_annotate = queryset.filter(virtualmachine__isnull=False).annotate(resource_value=F("virtualmachine__name"))
+        ip_annotate = queryset.filter(ipaddress__isnull=False).annotate(resource_value=F("ipaddress__name"))
         cluster_annotate = queryset.filter(cluster__isnull=False).annotate(resource_value=F("cluster__name"))
-        queryset_union = device_annotate.union(vm_annotate).union(cluster_annotate)
+        queryset_union = device_annotate.union(vm_annotate).union(ip_annotate).union(cluster_annotate)
         return queryset_union.order_by(f"{'-' if is_descending else ''}resource_value"), True
 
     def order_type(self, queryset, is_descending):
         device_annotate = queryset.filter(device__isnull=False).annotate(render_type=Value("device"))
         vm_annotate = queryset.filter(virtualmachine__isnull=False).annotate(render_type=Value("virtualmachine"))
+        ip_annotate = queryset.filter(ipaddress__isnull=False).annotate(render_type=Value("ipaddress"))
         cluster_annotate = queryset.filter(cluster__isnull=False).annotate(render_type=Value("cluster"))
-        queryset_union = device_annotate.union(vm_annotate).union(cluster_annotate)
+        queryset_union = device_annotate.union(vm_annotate).union(ip_annotate).union(cluster_annotate)
         return queryset_union.order_by(f"{'-' if is_descending else ''}render_type"), True
 
     def render_software_product(self, value, **kwargs):

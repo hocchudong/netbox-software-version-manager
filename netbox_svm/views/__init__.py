@@ -18,6 +18,9 @@ from .software_product_installation import (
     SoftwareProductInstallationEditView,
     SoftwareProductInstallationDeleteView,
     SoftwareProductInstallationBulkDeleteView,
+    SoftwareProductInstallationContactView,
+    SoftwareProductInstallationAddContactView,
+    SoftwareProductInstallationRemoveContactView
 )
 from .software_product_version import (
     SoftwareProductVersionListView,
