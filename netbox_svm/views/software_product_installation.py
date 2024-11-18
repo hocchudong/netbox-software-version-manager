@@ -14,7 +14,6 @@ from django.utils.translation import gettext as _
 
 class SoftwareProductInstallationListView(generic.ObjectListView):
     """View for listing all existing SoftwareProductInstallations."""
-
     queryset = SoftwareProductInstallation.objects.all()
     filterset = filtersets.SoftwareProductInstallationFilterSet
     filterset_form = forms.SoftwareProductInstallationFilterForm
@@ -29,7 +28,6 @@ class SoftwareProductInstallationView(generic.ObjectView):
 
 class SoftwareProductInstallationEditView(generic.ObjectEditView):
     """View for editing and creating a SoftwareProductInstallation instance."""
-
     queryset = SoftwareProductInstallation.objects.all()
     form = forms.SoftwareProductInstallationForm
 

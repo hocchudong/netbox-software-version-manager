@@ -1,6 +1,5 @@
 from django.forms import ValidationError
 from django.urls import reverse_lazy
-from dcim.models import Device
 from ipam.models import IPAddress
 from tenancy.models import Contact
 from django import forms
@@ -10,7 +9,9 @@ from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFil
 from utilities.forms.rendering import FieldSet
 from utilities.forms.widgets import APISelect
 from utilities.forms import ConfirmationForm
-from virtualization.models import VirtualMachine, Cluster
+# from virtualization.models import VirtualMachine, Cluster
+# from dcim.models import Device
+
 
 
 class SoftwareProductInstallationForm(NetBoxModelForm):
@@ -18,15 +19,16 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
 
     comments = CommentField()
 
-    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
-    virtualmachine = DynamicModelChoiceField(queryset=VirtualMachine.objects.all(), required=False)
-    ipaddress = DynamicModelChoiceField(queryset=IPAddress.objects.all(), required=False)
+    ipaddress = DynamicModelMultipleChoiceField(
+        queryset=IPAddress.objects.all(), 
+        required=True
+    )
+    
     contact = DynamicModelMultipleChoiceField(
         queryset=Contact.objects.all(),
         required=False
     )
 
-    cluster = DynamicModelChoiceField(queryset=Cluster.objects.all(), required=False)
     software_product = DynamicModelChoiceField(
         queryset=SoftwareProduct.objects.all(),
         required=True,
@@ -44,10 +46,7 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
     class Meta:
         model = SoftwareProductInstallation
         fields = (
-            "device",
-            "virtualmachine",
             "ipaddress",
-            "cluster",
             "software_product",
             "contact",
             "version",
