@@ -10,6 +10,11 @@ class SoftwareProductVersionListView(generic.ObjectListView):
     filterset = filtersets.SoftwareProductVersionFilterSet
     filterset_form = forms.SoftwareProductVersionFilterForm
     table = tables.SoftwareProductVersionTable
+    # actions = {
+    #     'import': {'add'},
+    #     'export': {'view'},
+    #     'bulk_delete': {'delete'},
+    # }
 
 
 class SoftwareProductVersionView(generic.ObjectView):
@@ -38,3 +43,8 @@ class SoftwareProductVersionDeleteView(generic.ObjectDeleteView):
 class SoftwareProductVersionBulkDeleteView(generic.BulkDeleteView):
     queryset = SoftwareProductVersion.objects.all()
     table = tables.SoftwareProductVersionTable
+
+
+class SoftwareProductVersionBulkImportView(generic.BulkImportView):
+    queryset = SoftwareProductVersion.objects.all()
+    model_form = forms.SoftwareProductVersionImportForm

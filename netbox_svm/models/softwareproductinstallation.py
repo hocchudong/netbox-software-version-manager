@@ -19,53 +19,35 @@ class SoftwareProductInstallation(NetBoxModel):
         on_delete=models.PROTECT
     )
     
-    ipaddress = models.ManyToManyField(
+    ipaddress = models.ForeignKey(
         to='ipam.IPAddress', 
         related_name='software_installed',
         blank=True,
-        default=None
+        default=None,
+        on_delete=models.PROTECT
     )
     
-    contact = models.ManyToManyField(
-        to='tenancy.Contact',
-        related_name='software_contact',
+    owner = models.CharField(
+        max_length=255,
         blank=True,
-        default=None
+        null=True,
+        default=''
     )
 
     objects = RestrictedQuerySet.as_manager()
 
     def __str__(self):
-        return f"{self.ipaddress.first()} ({self.software_product} {self.version} ) "
+        return f"{self.ipaddress} ({self.software_product} {self.version}) "
 
-    # class Meta:
-    #     constraints = [
-    #         models.CheckConstraint(
-    #             name="%(app_label)s_%(class)s_resource",
-    #             check=(
-    #                 models.Q(device__isnull=False, virtualmachine__isnull=True, cluster__isnull=True, ipaddress__isnull=True)
-    #                 | models.Q(device__isnull=True, virtualmachine__isnull=False, cluster__isnull=True, ipaddress__isnull=True)
-    #                 | models.Q(device__isnull=True, virtualmachine__isnull=True, cluster__isnull=False, ipaddress__isnull=True)
-    #                 | models.Q(device__isnull=True, virtualmachine__isnull=True, cluster__isnull=True, ipaddress__isnull=False)
-    #             ),
-    #             violation_error_message="Installation requires exactly one resource destination.",
-    #         )
-    #     ]
-
+    
     def get_absolute_url(self):
         return reverse("plugins:netbox_svm:softwareproductinstallation", kwargs={"pk": self.pk})
 
-    @property
-    def resource(self):
-        # return self.device or self.virtualmachine or self.cluster or self.ipaddress
-        self.ipaddress
+    # @property
+    # def resource(self):
+    #     # return self.device or self.virtualmachine or self.cluster or self.ipaddress
+    #     self.ipaddress
 
     def render_type(self):
         return "ipaddress"
-        # if self.device:
-        #     return "device"
-        # if self.virtualmachine:
-        #     return "virtualmachine"
-        # if self.ipaddress:
-        #     return "ipaddress"
-        # return "cluster"
+        

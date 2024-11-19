@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from django.db.models import Count, F, Value
+from django.db.models import Count, F
 
 from netbox.tables import NetBoxTable, ToggleColumn, columns
 from netbox_svm.models import SoftwareProduct, SoftwareProductVersion, SoftwareProductInstallation, SoftwareLicense
@@ -96,9 +96,18 @@ class SoftwareProductVersionTable(NetBoxTable):
 
 SOFTWARE_INSTALL_DETAIL_LINK = """
 {% if record.pk %}
-    <a href="{{ record.get_absolute_url }}">{{ record.ipaddress.first }}</a>
+    <a href="{{ record.get_absolute_url }}">{{ record.ipaddress }}</a>
 {% endif %}
 """
+
+SOFTWARE_INSTALL_CONTACTS = """
+{% if record.ipaddress.contacts.first %}
+    {{ record.owner }}, <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
+{% else %}
+    {{ record.owner }}
+{% endif %}
+"""
+
 
 class SoftwareProductInstallationTable(NetBoxTable):
     """Table for displaying SoftwareProductInstallation objects."""
@@ -109,8 +118,12 @@ class SoftwareProductInstallationTable(NetBoxTable):
         export_raw=True,
         attrs={'td': {'class': 'text-nowrap'}}
     )
-    # ipaddress = tables.Column(accessor="ipaddress.first", linkify=True)
-    contact = tables.Column(accessor="contact.first", linkify=True, orderable=False)
+
+    owner = columns.TemplateColumn(
+        template_code=SOFTWARE_INSTALL_CONTACTS,
+        export_raw=True,
+        attrs={'td': {'class': 'text-nowrap'}}
+    )
     software_product = tables.Column(accessor="software_product", linkify=True)
     version = tables.Column(accessor="version", linkify=True)
 
@@ -121,7 +134,7 @@ class SoftwareProductInstallationTable(NetBoxTable):
         fields = (
             "pk",
             "ip",
-            "contact",
+            "owner",
             "software_product",
             "version",
             "tags",
@@ -129,7 +142,7 @@ class SoftwareProductInstallationTable(NetBoxTable):
         default_columns = (
             "pk",
             "ip",
-            "contact",
+            "owner",
             "software_product",
             "version",
             "tags",

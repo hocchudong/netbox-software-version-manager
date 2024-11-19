@@ -2,8 +2,6 @@ from django.db.models import Q
 # from netbox.filtersets import NetBoxModelFilterSet
 from netbox.filtersets import NetBoxModelFilterSet
 from netbox_svm.models import SoftwareProduct, SoftwareProductVersion, SoftwareProductInstallation, SoftwareLicense
-import django_filters
-from tenancy.models import Contact
 
 class SoftwareProductFilterSet(NetBoxModelFilterSet):
     """Filter capabilities for SoftwareProduct instances."""
@@ -48,11 +46,7 @@ class SoftwareProductVersionFilterSet(NetBoxModelFilterSet):
 class SoftwareProductInstallationFilterSet(NetBoxModelFilterSet):
     """Filter capabilities for SoftwareProductInstallation instances."""
 
-    contact_id = django_filters.ModelMultipleChoiceFilter(
-        field_name='contact',
-        queryset=Contact.objects.all(),
-        label='Contact (ID)',
-    )
+
     class Meta:
         model = SoftwareProductInstallation
         fields = ("software_product",)

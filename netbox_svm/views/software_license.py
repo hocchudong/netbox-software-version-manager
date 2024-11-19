@@ -34,3 +34,7 @@ class SoftwareLicenseDeleteView(generic.ObjectDeleteView):
 class SoftwareLicenseBulkDeleteView(generic.BulkDeleteView):
     queryset = SoftwareLicense.objects.all()
     table = tables.SoftwareLicenseTable
+
+class SoftwareLicenseBulkImportView(generic.BulkImportView):
+    queryset = SoftwareLicense.objects.all()
+    model_form = forms.SoftwareLicenseImportForm

@@ -1,17 +1,13 @@
 from django.forms import ValidationError
 from django.urls import reverse_lazy
 from ipam.models import IPAddress
-from tenancy.models import Contact
 from django import forms
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 from netbox_svm.models import SoftwareProductInstallation, SoftwareProduct, SoftwareProductVersion
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFilterField, DynamicModelMultipleChoiceField
 from utilities.forms.rendering import FieldSet
 from utilities.forms.widgets import APISelect
-from utilities.forms import ConfirmationForm
-# from virtualization.models import VirtualMachine, Cluster
-# from dcim.models import Device
-
+from netbox.forms import NetBoxModelImportForm
 
 
 class SoftwareProductInstallationForm(NetBoxModelForm):
@@ -24,8 +20,7 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
         required=True
     )
     
-    contact = DynamicModelMultipleChoiceField(
-        queryset=Contact.objects.all(),
+    owner = forms.CharField(
         required=False
     )
 
@@ -48,7 +43,7 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
         fields = (
             "ipaddress",
             "software_product",
-            "contact",
+            "owner",
             "version",
             "tags",
             "comments",
@@ -71,23 +66,8 @@ class SoftwareProductInstallationFilterForm(NetBoxModelFilterSetForm):
     tag = TagFilterField(model)
 
 
-class SoftwareProductInstallationAddContactForm(forms.Form):
-    contact = DynamicModelMultipleChoiceField(
-        queryset=Contact.objects.all(),
-    )
+class SoftwareProductInstallationImportForm(NetBoxModelImportForm):
     class Meta:
-        fields = [
-            'contact'
-        ]
+        model = SoftwareProductInstallation
+        fields = ('ipaddress', 'comments', 'software_product', 'version', 'owner')
 
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-        self.fields['contact'].choices = []
-
-class SoftwareProductInstallationRemoveContactForm(ConfirmationForm):
-    pk = forms.ModelMultipleChoiceField(
-        queryset=Contact.objects.all(),
-        widget=forms.MultipleHiddenInput()
-    )

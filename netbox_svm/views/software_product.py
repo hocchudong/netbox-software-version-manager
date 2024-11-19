@@ -10,6 +10,11 @@ class SoftwareProductListView(generic.ObjectListView):
     filterset = filtersets.SoftwareProductFilterSet
     filterset_form = forms.SoftwareProductFilterForm
     table = tables.SoftwareProductTable
+    # actions = {
+    #     'import': {'add'},
+    #     'export': {'view'},
+    #     'bulk_delete': {'delete'},
+    # }
 
 
 class SoftwareProductView(generic.ObjectView):
@@ -38,3 +43,8 @@ class SoftwareProductDeleteView(generic.ObjectDeleteView):
 class SoftwareProductBulkDeleteView(generic.BulkDeleteView):
     queryset = SoftwareProduct.objects.all()
     table = tables.SoftwareProductTable
+
+
+class SoftwareProductBulkImportView(generic.BulkImportView):
+    queryset = SoftwareProduct.objects.all()
+    model_form = forms.SoftwareProductImportForm
