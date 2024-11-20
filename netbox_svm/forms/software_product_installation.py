@@ -15,7 +15,7 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
 
     comments = CommentField()
 
-    ipaddress = DynamicModelMultipleChoiceField(
+    ipaddress = DynamicModelChoiceField(
         queryset=IPAddress.objects.all(), 
         required=True
     )

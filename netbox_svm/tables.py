@@ -101,8 +101,10 @@ SOFTWARE_INSTALL_DETAIL_LINK = """
 """
 
 SOFTWARE_INSTALL_CONTACTS = """
-{% if record.ipaddress.contacts.first %}
+{% if record.ipaddress.contacts.first and record.owner != "" %}
     {{ record.owner }}, <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
+{% elif record.ipaddress.contacts.first and record.owner == ""}
+    <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
 {% else %}
     {{ record.owner }}
 {% endif %}

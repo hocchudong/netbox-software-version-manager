@@ -1,6 +1,6 @@
 from netbox.plugins import PluginConfig
 
-__version__ = "1.1.0"
+__version__ = "1.1.3"
 
 
 class SVMConfig(PluginConfig):
