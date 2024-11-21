@@ -12,34 +12,25 @@
                 Software Product Installation
             </h5>
             <table class="table table-hover attr-table">
-{% if object.device %}
                 <tr>
-                    <th scope="row">Device</th>
-                    <td>{{ object.device }}</td>
+                    <th scope="row">IpAddress</th>
+                    <td><a href="{% url 'ipam:ipaddress' object.ipaddress.id %}">{{ object.ipaddress }}</a></td>
                 </tr>
-{% elif object.virtualmachine %}
-                <tr>
-                    <th scope="row">Virtualmachine</th>
-                    <td>{{ object.virtualmachine }}</td>
-                </tr>
-{% elif object.ipaddress %}
-                <tr>
-                    <th scope="row">IPAddress</th>
-                    <td>{{ object.ipaddress }}</td>
-                </tr>
-{% else %}
-                <tr>
-                    <th scope="row">Cluster</th>
-                    <td>{{ object.cluster }}</td>
-                </tr>
-{% endif %}
                 <tr>
                     <th scope="row">Software Product</th>
-                    <td>{{ object.software_product }}</td>
+                    <td><a href="{% url 'plugins:netbox_svm:softwareproduct' object.software_product.id %}">{{ object.software_product }}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Version</th>
-                    <td>{{ object.version }}</td>
+                    <td><a href="{% url 'plugins:netbox_svm:softwareproductversion' object.version.id %}">{{ object.version }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Owner</th>
+                    {% if object.ipaddress.contacts.first %}
+                    <td>{{ object.owner }}, <a href="{% url 'tenancy:contact' object.ipaddress.contacts.first.contact.id %}">{{ object.ipaddress.contacts.first.contact }}</a></td>
+                    {% else %}
+                    <td>{{ object.owner }}</td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
@@ -48,7 +39,6 @@
         {% include 'inc/panels/comments.html' %}
         {% plugin_left_page object %}
     </div>
-    {% include 'netbox_svm/inc/installation_contact.html' %}
 </div>
 <div class="row">
     <div class="col col-md-12">

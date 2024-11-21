@@ -3,7 +3,7 @@ from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 from netbox_svm.models import SoftwareProduct
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFilterField
 from utilities.forms.rendering import FieldSet
-
+from netbox.forms import NetBoxModelImportForm
 
 class SoftwareProductForm(NetBoxModelForm):
     """Form for creating a new SoftwareProduct object."""
@@ -30,3 +30,9 @@ class SoftwareProductFilterForm(NetBoxModelFilterSetForm):
     model = SoftwareProduct
     fieldsets = (FieldSet(None, ("q", "tag")),)
     tag = TagFilterField(model)
+
+class SoftwareProductImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareProduct
+        fields = ('name', 'manufacturer', 'description', 'comments')
+

@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from django.db.models import Count, F, Value
+from django.db.models import Count, F
 
 from netbox.tables import NetBoxTable, ToggleColumn, columns
 from netbox_svm.models import SoftwareProduct, SoftwareProductVersion, SoftwareProductInstallation, SoftwareLicense
@@ -94,19 +94,38 @@ class SoftwareProductVersionTable(NetBoxTable):
         return queryset, True
 
 
+SOFTWARE_INSTALL_DETAIL_LINK = """
+{% if record.pk %}
+    <a href="{{ record.get_absolute_url }}">{{ record.ipaddress }}</a>
+{% endif %}
+"""
+
+SOFTWARE_INSTALL_CONTACTS = """
+{% if record.ipaddress.contacts.first and record.owner.strip != '' %}
+    {{ record.owner }}, <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
+{% elif record.ipaddress.contacts.first and record.owner.strip == '' %}
+    <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
+{% else %}
+    {{ record.owner }}
+{% endif %}
+"""
+
+
 class SoftwareProductInstallationTable(NetBoxTable):
     """Table for displaying SoftwareProductInstallation objects."""
 
     pk = ToggleColumn()
-    name = tables.LinkColumn()
+    ip = columns.TemplateColumn(
+        template_code=SOFTWARE_INSTALL_DETAIL_LINK,
+        export_raw=True,
+        attrs={'td': {'class': 'text-nowrap'}}
+    )
 
-    device = tables.Column(accessor="device", linkify=True)
-    virtualmachine = tables.Column(accessor="virtualmachine", linkify=True)
-    ipaddress = tables.Column(accessor="ipaddress", linkify=True)
-    cluster = tables.Column(accessor="cluster", linkify=True)
-    resource = tables.Column(accessor="resource", linkify=True)
-    type = tables.Column(accessor="render_type")
-    # contact = tables.Column(accessor="contact", linkify=True)
+    owner = columns.TemplateColumn(
+        template_code=SOFTWARE_INSTALL_CONTACTS,
+        export_raw=True,
+        attrs={'td': {'class': 'text-nowrap'}}
+    )
     software_product = tables.Column(accessor="software_product", linkify=True)
     version = tables.Column(accessor="version", linkify=True)
 
@@ -116,40 +135,28 @@ class SoftwareProductInstallationTable(NetBoxTable):
         model = SoftwareProductInstallation
         fields = (
             "pk",
-            "name",
-            "resource",
-            "type",
+            "ip",
+            "owner",
             "software_product",
             "version",
             "tags",
         )
         default_columns = (
             "pk",
-            "resource",
-            "type",
+            "ip",
+            "owner",
             "software_product",
             "version",
             "tags",
         )
+    
+    def order_ip(self, queryset, is_descending):
+        queryset = queryset.filter(ipaddress__isnull=False).annotate(
+            ipaddress_address=F("ipaddress")).order_by(
+                "-ipaddress_address" if is_descending else "ipaddress_address"
+        )
 
-    def order_resource(self, queryset, is_descending):
-        device_annotate = queryset.filter(device__isnull=False).annotate(resource_value=F("device__name"))
-        vm_annotate = queryset.filter(virtualmachine__isnull=False).annotate(resource_value=F("virtualmachine__name"))
-        ip_annotate = queryset.filter(ipaddress__isnull=False).annotate(resource_value=F("ipaddress__name"))
-        cluster_annotate = queryset.filter(cluster__isnull=False).annotate(resource_value=F("cluster__name"))
-        queryset_union = device_annotate.union(vm_annotate).union(ip_annotate).union(cluster_annotate)
-        return queryset_union.order_by(f"{'-' if is_descending else ''}resource_value"), True
-
-    def order_type(self, queryset, is_descending):
-        device_annotate = queryset.filter(device__isnull=False).annotate(render_type=Value("device"))
-        vm_annotate = queryset.filter(virtualmachine__isnull=False).annotate(render_type=Value("virtualmachine"))
-        ip_annotate = queryset.filter(ipaddress__isnull=False).annotate(render_type=Value("ipaddress"))
-        cluster_annotate = queryset.filter(cluster__isnull=False).annotate(render_type=Value("cluster"))
-        queryset_union = device_annotate.union(vm_annotate).union(ip_annotate).union(cluster_annotate)
-        return queryset_union.order_by(f"{'-' if is_descending else ''}render_type"), True
-
-    def render_software_product(self, value, **kwargs):
-        return f"{kwargs['record'].software_product.manufacturer.name} - {value}"
+        return queryset, True
 
 
 class SoftwareLicenseTable(NetBoxTable):

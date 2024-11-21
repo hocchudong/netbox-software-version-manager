@@ -6,7 +6,7 @@ from netbox_svm.models import SoftwareProduct, SoftwareProductVersion, SoftwareP
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFilterField, LaxURLField
 from utilities.forms.rendering import FieldSet
 from utilities.forms.widgets import APISelect, DatePicker
-
+from netbox.forms import NetBoxModelImportForm
 
 class SoftwareLicenseForm(NetBoxModelForm):
     """Form for creating a new SoftwareLicense object."""
@@ -65,3 +65,11 @@ class SoftwareLicenseFilterForm(NetBoxModelFilterSetForm):
     model = SoftwareLicense
     fieldsets = (FieldSet(None, ("q", "tag")),)
     tag = TagFilterField(model)
+
+
+class SoftwareLicenseImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareLicense
+        fields = ('name', 'comments', 'description', 'type', 'stored_location', 'stored_location_url','start_date',
+            'expiration_date', 'support', 'license_amount', 'software_product', 'version', 'installation'
+        )

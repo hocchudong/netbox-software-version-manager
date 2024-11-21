@@ -6,7 +6,7 @@ from netbox_svm.models import SoftwareProduct, SoftwareProductVersion
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFilterField
 from utilities.forms.rendering import FieldSet
 from utilities.forms.widgets import APISelect, DatePicker
-
+from netbox.forms import NetBoxModelImportForm
 
 class SoftwareProductVersionForm(NetBoxModelForm):
     """Form for creating a new SoftwareProductVersion object."""
@@ -42,3 +42,10 @@ class SoftwareProductVersionFilterForm(NetBoxModelFilterSetForm):
     model = SoftwareProductVersion
     fieldsets = (FieldSet(None, ("q", "tag")),)
     tag = TagFilterField(model)
+
+class SoftwareProductVersionImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareProductVersion
+        fields = ('name', 'comments', 'release_date', 'documentation_url', 'end_of_support', 'filename', 'file_checksum',
+            'file_link', 'release_type', 'software_product'
+        )

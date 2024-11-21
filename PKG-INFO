@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: netbox-svm
-Version: 1.1.0
+Version: 1.1.4
 Summary: Software Version Management Netbox Plugin fork from netbox-slm 1.7.0
 Home-page: https://github.com/hocchudong/netbox-software-version-manager
 Author-email: hungnv <vhung99.wp@gmail.com>
