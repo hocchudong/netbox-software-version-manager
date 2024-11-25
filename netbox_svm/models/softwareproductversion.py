@@ -65,3 +65,6 @@ class SoftwareProductVersion(NetBoxModel):
             if count
             else "0"
         )
+    
+    class Meta:
+        unique_together = ('name', 'software_product')

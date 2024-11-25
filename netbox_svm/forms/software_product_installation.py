@@ -17,7 +17,11 @@ class SoftwareProductInstallationForm(NetBoxModelForm):
 
     ipaddress = DynamicModelChoiceField(
         queryset=IPAddress.objects.all(), 
-        required=True
+        required=True,
+        selector=True,
+        query_params={
+            'site_id': ['$site', 'null']
+        },
     )
     
     owner = forms.CharField(
@@ -67,6 +71,49 @@ class SoftwareProductInstallationFilterForm(NetBoxModelFilterSetForm):
 
 
 class SoftwareProductInstallationImportForm(NetBoxModelImportForm):
+    ipaddress = forms.CharField(
+        max_length=255,
+        required=True,
+        help_text="IPAddress with mask (eg: 10.0.0.100/24)"
+    )
+
+    software_product = forms.CharField(
+        max_length=255,
+        required=True,
+        help_text="SoftwareProduct name"
+    )
+
+    version = forms.CharField(
+        max_length=255,
+        required=True,
+        help_text="Software version"
+    )
+
+    def clean_software_product(self):
+        software_product=self.cleaned_data.get('software_product')
+        try:
+            software_product = SoftwareProduct.objects.get(name=software_product)
+            return software_product
+        except: 
+            raise forms.ValidationError(f"{software_product} not found")
+
+    def clean_version(self):
+        version=self.cleaned_data.get('version')
+        software_product=self.cleaned_data.get('software_product')
+        try:
+            version = SoftwareProductVersion.objects.get(software_product__name=software_product,name=version)
+            return version
+        except: 
+            raise forms.ValidationError(f"{version} {software_product} not found")
+
+    def clean_ipaddress(self):
+        ipaddress=self.cleaned_data.get('ipaddress')
+        try:
+            ipaddress = IPAddress.objects.get(address=ipaddress)
+            return ipaddress
+        except: 
+            raise forms.ValidationError(f"{ipaddress} not found")
+
     class Meta:
         model = SoftwareProductInstallation
         fields = ('ipaddress', 'comments', 'software_product', 'version', 'owner')

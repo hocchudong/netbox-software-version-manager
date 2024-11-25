@@ -4,6 +4,7 @@ from netbox_svm.models import SoftwareProduct
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, TagFilterField
 from utilities.forms.rendering import FieldSet
 from netbox.forms import NetBoxModelImportForm
+from django import forms
 
 class SoftwareProductForm(NetBoxModelForm):
     """Form for creating a new SoftwareProduct object."""
@@ -32,6 +33,20 @@ class SoftwareProductFilterForm(NetBoxModelFilterSetForm):
     tag = TagFilterField(model)
 
 class SoftwareProductImportForm(NetBoxModelImportForm):
+    manufacturer = forms.CharField(
+        max_length=255,
+        required=True,
+        help_text="Manufacturer Name. If Manufacture not found it will be set Null as default"
+    )
+
+    def clean_manufacturer(self):
+        manufacturer=self.cleaned_data.get('manufacturer')
+        try:
+            manufacturer = Manufacturer.objects.get(name=manufacturer)
+            return manufacturer
+        except: 
+            return None
+
     class Meta:
         model = SoftwareProduct
         fields = ('name', 'manufacturer', 'description', 'comments')
