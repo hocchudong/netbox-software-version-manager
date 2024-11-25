@@ -23,7 +23,6 @@ class SoftwareProductInstallationEditView(generic.ObjectEditView):
     queryset = SoftwareProductInstallation.objects.all()
     form = forms.SoftwareProductInstallationForm
 
-
 class SoftwareProductInstallationDeleteView(generic.ObjectDeleteView):
     """View for deleting a SoftwareProductInstallation instance"""
 

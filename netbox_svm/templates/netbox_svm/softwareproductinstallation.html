@@ -26,8 +26,18 @@
                 </tr>
                 <tr>
                     <th scope="row">Owner</th>
-                    {% if object.ipaddress.contacts.first %}
-                    <td>{{ object.owner }}, <a href="{% url 'tenancy:contact' object.ipaddress.contacts.first.contact.id %}">{{ object.ipaddress.contacts.first.contact }}</a></td>
+                    {% if object.ipaddress.contacts.count >= 1 and object.owner.strip != "" %}
+                    <td>{{ object.owner }}, 
+                        {% for contact in object.ipaddress.contacts.all %}
+                        <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    {% elif object.ipaddress.contacts.count >= 1 and object.owner.strip == "" %}
+                    <td>
+                        {% for contact in object.ipaddress.contacts.all %}
+                        <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
                     {% else %}
                     <td>{{ object.owner }}</td>
                     {% endif %}

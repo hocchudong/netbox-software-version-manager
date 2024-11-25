@@ -23,6 +23,10 @@ class SoftwareVersionInfoExtension(PluginTemplateExtension):
             'software_version': software_version,
         })
 
+class SoftwareInstallButtonAddToIPAddress(PluginTemplateExtension):
+    def buttons(self):
+        return self.render('netbox_svm/inc/softwareproductinstallation_button.html')
+
 class VirtualMachineSofwareVersionInfo(SoftwareVersionInfoExtension):
     model = 'virtualization.virtualmachine'
     kind = 'virtualmachine'
@@ -41,11 +45,15 @@ class IPSofwareVersionInfo(SoftwareVersionInfoExtension):
     model = 'ipam.ipaddress'
     kind = 'ipaddress'
 
+class IPSoftwareInstallButtonAdd(SoftwareInstallButtonAddToIPAddress):
+    model = 'ipam.ipaddress'
+    kind = 'ipaddress'
     # def right_page(self):
     #     return ""
 
 template_extensions = (
-    VirtualMachineSofwareVersionInfo,
-    DeviceSofwareVersionInfo,
-    IPSofwareVersionInfo
+    # VirtualMachineSofwareVersionInfo,
+    # DeviceSofwareVersionInfo,
+    IPSofwareVersionInfo,
+    IPSoftwareInstallButtonAdd
 )

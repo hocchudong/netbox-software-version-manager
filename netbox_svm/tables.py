@@ -101,10 +101,15 @@ SOFTWARE_INSTALL_DETAIL_LINK = """
 """
 
 SOFTWARE_INSTALL_CONTACTS = """
-{% if record.ipaddress.contacts.first and record.owner.strip != '' %}
-    {{ record.owner }}, <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
-{% elif record.ipaddress.contacts.first and record.owner.strip == '' %}
-    <a href="{% url 'tenancy:contact' record.ipaddress.contacts.first.contact.id %}">{{ record.ipaddress.contacts.first.contact }}</a>
+{% if record.ipaddress.contacts.count >= 1 and record.owner.strip != "" %}
+    {{ record.owner }},
+    {% for contact in record.ipaddress.contacts.all %}
+    <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+{% elif record.ipaddress.contacts.count >= 1 and record.owner.strip == "" %}
+    {% for contact in record.ipaddress.contacts.all %}
+    <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
 {% else %}
     {{ record.owner }}
 {% endif %}
@@ -124,7 +129,6 @@ class SoftwareProductInstallationTable(NetBoxTable):
     owner = columns.TemplateColumn(
         template_code=SOFTWARE_INSTALL_CONTACTS,
         export_raw=True,
-        attrs={'td': {'class': 'text-nowrap'}}
     )
     software_product = tables.Column(accessor="software_product", linkify=True)
     version = tables.Column(accessor="version", linkify=True)

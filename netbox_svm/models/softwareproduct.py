@@ -7,10 +7,13 @@ from utilities.querysets import RestrictedQuerySet
 from .softwareproductinstallation import SoftwareProductInstallation
 
 class SoftwareProduct(NetBoxModel):
-    name = models.CharField(max_length=128)
+    name = models.CharField(
+        max_length=128,
+        unique=True
+    )
     comments = models.TextField(blank=True)
 
-    description = models.CharField(max_length=255, null=True, blank=True)
+    description = models.CharField(max_length=255, null=True, blank=True, )
     manufacturer = models.ForeignKey(to="dcim.Manufacturer", on_delete=models.PROTECT, null=True, blank=True)
 
     objects = RestrictedQuerySet.as_manager()
