@@ -52,8 +52,8 @@ class IPSoftwareInstallButtonAdd(SoftwareInstallButtonAddToIPAddress):
     #     return ""
 
 template_extensions = (
-    VirtualMachineSofwareVersionInfo,
-    DeviceSofwareVersionInfo,
+    # VirtualMachineSofwareVersionInfo,
+    # DeviceSofwareVersionInfo,
     IPSofwareVersionInfo,
     IPSoftwareInstallButtonAdd
 )
