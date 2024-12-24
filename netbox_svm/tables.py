@@ -104,11 +104,11 @@ SOFTWARE_INSTALL_CONTACTS = """
 {% if record.ipaddress.contacts.count >= 1 and record.owner.strip != "" %}
     {{ record.owner }},
     {% for contact in record.ipaddress.contacts.all %}
-    <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+    <a href="{% url 'tenancy:contact' contact.contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 {% elif record.ipaddress.contacts.count >= 1 and record.owner.strip == "" %}
     {% for contact in record.ipaddress.contacts.all %}
-    <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+    <a href="{% url 'tenancy:contact' contact.contact.id  %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 {% else %}
     {{ record.owner }}

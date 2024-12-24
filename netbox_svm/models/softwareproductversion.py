@@ -48,7 +48,7 @@ class SoftwareProductVersion(NetBoxModel):
     objects = RestrictedQuerySet.as_manager()
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.software_product}"
 
     def get_absolute_url(self):
         return reverse("plugins:netbox_svm:softwareproductversion", kwargs={"pk": self.pk})

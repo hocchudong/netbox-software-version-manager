@@ -29,13 +29,13 @@
                     {% if object.ipaddress.contacts.count >= 1 and object.owner.strip != "" %}
                     <td>{{ object.owner }}, 
                         {% for contact in object.ipaddress.contacts.all %}
-                        <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="{% url 'tenancy:contact' contact.contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
                     {% elif object.ipaddress.contacts.count >= 1 and object.owner.strip == "" %}
                     <td>
                         {% for contact in object.ipaddress.contacts.all %}
-                        <a href="{% url 'tenancy:contact' contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="{% url 'tenancy:contact' contact.contact.id %}">{{ contact.contact }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
                     {% else %}
